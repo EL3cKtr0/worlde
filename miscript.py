@@ -24,3 +24,5 @@ print("Writing on files..")
 for c in range(4, 10):
     NAME_OUTPUT = FIRST + str(c) + THIRD
     write_on_file(c, NAME_OUTPUT)
+
+print("Lists created")
