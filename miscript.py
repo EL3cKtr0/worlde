@@ -73,10 +73,14 @@ def start():
     WORDS = set()
 
     for word in INPUT:
-        ADDED = word.strip()
-        WORDS.add(ADDED)
+        WORDS.add(word.strip())
 
     FIRST_WORD = create_first_word(WORDS)
+
+    NEDDED_CHARS = set()
+    POSSIBLE_CHARS = set()
+
+
 
 
 print("Generating files..")
