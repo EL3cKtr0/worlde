@@ -1,6 +1,17 @@
+
 INPUT_FILE = "./input/660000_parole_italiane.txt"
 FIRST = "./list/lista_"
 THIRD = "_wordle_ita.txt"
+
+def main():
+    print("Generating files..")
+    create_files()
+
+    print("Writing on files..")
+    writes()
+
+
+    start()
 
 """
 
@@ -73,20 +84,20 @@ def create_first_word(SET_OF_WORD):
 
 """
 
-create_matrix():        create the matrix of all 0 for the confronting of the words
-return:                 2D Array; the matrix
+create_map():        create the map of all 1 for the confronting of the words
+return:                 list of dict of dict; the structure for keep in memory the state of the words
 
 """
 
-def create_matrix():
-    a = []
-    b = []
-    for i in range(0, 5):
-        b.append(1)
-    for j in range(0, 26):
-        a.append(b)
-    return a
+def create_map():
+    HASHMAP = {}
 
+    for i in range(0, 26):
+        HASHMAP[i] = {}
+        for j in range(0, 5):
+            HASHMAP[i][j] = 1
+
+    return HASHMAP
 
 
 """
@@ -117,12 +128,96 @@ return:
 """
 
 def resolve(WORDS):
+
+    INDEX_STRING = {0: "a", 1: "b", 2: "c", 3: "d", 4: "e", 5: "f", 6: "g", 7: "h", 8: "i", 9: "j", 10: "k", 11: "l", 12: "m", 13: "n", 14: "o", 15: "p", 16: "q", 17: "r", 18: "s", 19: "t", 20: "u", 21: "v", 22: "w", 23: "x", 24: "y", 25: "z"}
+
+    STRING_INDEX = {"a": 0, "b": 1, "c": 2, "d": 3, "e": 4, "f": 5, "g": 6, "h": 7, "i": 8, "j": 9, "k": 10, "l": 11, "m": 12, "n": 13, "o": 14, "p": 15, "q": 16, "r": 17, "s": 18, "t": 19, "u": 20, "v": 21, "w": 22, "x": 23, "y": 24, "z": 25}
+
+    MATRIX = create_map()
+    CHAR_ONE = []
+
+
     while len(WORDS) > 1:
         WORD = create_first_word(WORDS)
-        MATRIX = create_matrix()
         STRING_COMPARE = create_string_3value()
+        
+        for i in range(0, 5):
+            NUMBER = (STRING_INDEX[WORD[i]])
+
+            """
+            first check is when user insert the number 2 for a char: sets the corrisponding index of letter in MATRIX to 2 and  sets all
+            the remain letters index to 0
+            """
+
+            if STRING_COMPARE[i] == str(2):
+                MATRIX[NUMBER][i] = 2
+                for j in range(0, 26):
+                    if NUMBER != j:
+                        MATRIX[j][i] = 0
+                if WORD[i] in CHAR_ONE:
+                    CHAR_ONE.remove(WORD[i])
+            
+
+            """
+            second check is when user insert the number 0 for a char: set all the indexes of the letter equal to 0
+            """
+
+            if STRING_COMPARE[i] == str(0):
+                for i in range(0, 5):
+                    MATRIX[NUMBER][i] = 0
+
+            """
+            third check is when user insert the number 1 for a char: set the corrispondig index to 0 and add it to the list of needed chars
+            """
+
+            if STRING_COMPARE[i] == str(1):
+                if WORD[i] not in CHAR_ONE:
+                    CHAR_ONE.append(WORD[i])
+                MATRIX[NUMBER][i] = 0
+
+        """
+        confront the words in my set with my MATRIX to filter out the words we dont need
+        """
+        for word in WORDS.copy():
+            for c in range(0, 5):
+                NUMBER = STRING_INDEX[word[c]]
+                if MATRIX[NUMBER][c] == 0:
+                    WORDS.remove(word)
+                    break
+
+        for word in WORDS.copy(): 
+            for w in CHAR_ONE:
+                if w not in word:
+                    WORDS.remove(word)
+                    break
+
+        print_set(WORDS)
+        print("\n")
+
+    if len(WORDS) == 1:
+        print("Congratulazioni! la parola e': " + WORD)
+    else:
+        print("Qualcosa e' andato storto, non e' stata trovata alcuna parola :(")
 
 
+
+"""
+
+print_set():            print the set in the argument
+argument:               set; the set we wanna print
+return:                 null
+
+
+"""
+
+def print_set(SET):
+    i = 0
+    for w in SET:
+        if i < len(SET):
+            print(w, end=', ')
+        else:
+            print(w)
+        i = i + 1
 
 
 """
@@ -145,12 +240,5 @@ def start():
 
 
 
-
-print("Generating files..")
-create_files()
-
-print("Writing on files..")
-writes()
-
-
-start()
+if __name__ == "__main__":
+    main()
