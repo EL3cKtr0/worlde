@@ -23,7 +23,7 @@ return:                 null;
 def create_files():
     for c in range(4, 10):
         NAME_OUTPUT = FIRST + str(c) + THIRD
-        OUTPUT = open(NAME_OUTPUT, "w")
+        OUTPUT = open(NAME_OUTPUT, "w+")
         OUTPUT.close()
 
 
@@ -78,13 +78,14 @@ def create_first_word(SET_OF_WORD):
         MY_WORD = input("DEVI inserire una parola esistente da 5 caratteri:\n")
         MY_WORD = MY_WORD.lower()
 
+    print("\n")
     return MY_WORD
 
 
 
 """
 
-create_map():        create the map of all 1 for the confronting of the words
+create_map():           create the map of all 1 for the confronting of the words
 return:                 list of dict of dict; the structure for keep in memory the state of the words
 
 """
@@ -108,13 +109,14 @@ return:                 string; the value of the string wiht 0, 1 or 2
 """
 
 def create_string_3value():
-    MY_WORD = input("\nScrivi una stringa lunga 5 cosi formata:\n\t0 se la lettera nella corrispettiva posizione NON esiste\n\t1 se la lettera nella corrispettiva posizione ESISTE ma NON e' in quella posizione\n\t2 se la lettera nella corrispettiva posizione ESISTE ed e' in posizione CORRETTA\n")
+    MY_WORD = input("Scrivi una stringa lunga 5 cosi formata:\n\t0 se la lettera nella corrispettiva posizione NON esiste\n\t1 se la lettera nella corrispettiva posizione ESISTE ma NON e' in quella posizione\n\t2 se la lettera nella corrispettiva posizione ESISTE ed e' in posizione CORRETTA\n")
     ALLOWED = "012"
 
     while len(str(MY_WORD)) != 5 or not str(MY_WORD).isdecimal() or not all(ch in ALLOWED for ch in MY_WORD):
         MY_WORD = str("")
-        MY_WORD = input("\nERRORE!\nScrivi una stringa lunga 5 cosi formata:\n\t0 se la lettera nella corrispettiva posizione NON esiste\n\t1 se la lettera nella corrispettiva posizione ESISTE ma NON e' in quella posizione\n\t2 se la lettera nella corrispettiva posizione ESISTE ed e' in posizione CORRETTA\n")
-
+        MY_WORD = input("ERRORE!\nScrivi una stringa lunga 5 cosi formata:\n\t0 se la lettera nella corrispettiva posizione NON esiste\n\t1 se la lettera nella corrispettiva posizione ESISTE ma NON e' in quella posizione\n\t2 se la lettera nella corrispettiva posizione ESISTE ed e' in posizione CORRETTA\n")
+    
+    print("\n")
     return MY_WORD
 
 
@@ -143,7 +145,6 @@ def resolve(WORDS):
         
         for i in range(0, 5):
             NUMBER = (STRING_INDEX[WORD[i]])
-            print(NUMBER)
             """
             first check is when user insert the number 2 for a char: sets the corrisponding index of letter in MATRIX to 2 and  sets all
             the remain letters index to 0
@@ -186,19 +187,19 @@ def resolve(WORDS):
                     WORDS.remove(word)
                     break
 
+        """
+        remove the words that doesn't contain the letter needed
+        """
         for word in WORDS.copy(): 
             for w in CHAR_ONE:
                 if w not in word:
                     WORDS.remove(word)
                     break
 
-        print(MATRIX)
-        print("\n")
         print_set(WORDS)
-        print("\n")
 
     if len(WORDS) == 1:
-        print("Congratulazioni! la parola e': " + WORD)
+        print("Congratulazioni! la parola e': " + WORDS.pop())
     else:
         print("Qualcosa e' andato storto, non e' stata trovata alcuna parola :(")
 
@@ -216,10 +217,10 @@ return:                 null
 def print_set(SET):
     i = 0
     for w in SET:
-        if i < len(SET):
+        if i < len(SET) - 1:
             print(w, end=', ')
         else:
-            print(w)
+            print(w + "\n")
         i = i + 1
 
 
