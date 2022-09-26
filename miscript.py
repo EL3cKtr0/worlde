@@ -143,7 +143,7 @@ def resolve(WORDS):
         
         for i in range(0, 5):
             NUMBER = (STRING_INDEX[WORD[i]])
-
+            print(NUMBER)
             """
             first check is when user insert the number 2 for a char: sets the corrisponding index of letter in MATRIX to 2 and  sets all
             the remain letters index to 0
@@ -164,7 +164,8 @@ def resolve(WORDS):
 
             if STRING_COMPARE[i] == str(0):
                 for i in range(0, 5):
-                    MATRIX[NUMBER][i] = 0
+                    if MATRIX[NUMBER][i] != 2:
+                        MATRIX[NUMBER][i] = 0
 
             """
             third check is when user insert the number 1 for a char: set the corrispondig index to 0 and add it to the list of needed chars
@@ -191,6 +192,8 @@ def resolve(WORDS):
                     WORDS.remove(word)
                     break
 
+        print(MATRIX)
+        print("\n")
         print_set(WORDS)
         print("\n")
 
