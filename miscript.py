@@ -13,6 +13,7 @@ def main():
 
     start()
 
+
 """
 
 create_files():         create the files .txt of each lenght of words from 4 to 9
@@ -25,8 +26,6 @@ def create_files():
         NAME_OUTPUT = FIRST + str(c) + THIRD
         OUTPUT = open(NAME_OUTPUT, "w+")
         OUTPUT.close()
-
-
 
 
 """
@@ -46,7 +45,6 @@ def write_on_file(c, name):
     OUT.close()
 
 
-
 """
 
 writes():               for each file from 4 to 9 call the write_on_files function
@@ -60,7 +58,6 @@ def writes():
         write_on_file(c, NAME_OUTPUT)
 
 
-
 """
 
 start():                create the first word for the algorithm with all the checks necessary
@@ -69,18 +66,17 @@ return:                 string; the first word of wordle
 
 """
 
-def create_first_word(SET_OF_WORD):
-    MY_WORD = input("Inserisci una parola esistente da 5 caratteri:\n")
+def create_first_word(SET_OF_WORD, LIST_WORDS):
+    MY_WORD = input("Inserisci una parola esistente da " + str(LIST_WORDS) + " caratteri:\n")
     MY_WORD = MY_WORD.lower()
 
-    while len(MY_WORD) != 5 or not MY_WORD.isalpha() or MY_WORD not in SET_OF_WORD:
+    while len(MY_WORD) != int(LIST_WORDS) or not MY_WORD.isalpha() or MY_WORD not in SET_OF_WORD:
         MY_WORD = ""
-        MY_WORD = input("DEVI inserire una parola esistente da 5 caratteri:\n")
+        MY_WORD = input("DEVI inserire una parola esistente da " + str(LIST_WORDS) + " caratteri:\n")
         MY_WORD = MY_WORD.lower()
 
     print("\n")
     return MY_WORD
-
 
 
 """
@@ -90,12 +86,12 @@ return:                 list of dict of dict; the structure for keep in memory t
 
 """
 
-def create_map():
+def create_map(LIST_WORDS):
     HASHMAP = {}
 
     for i in range(0, 26):
         HASHMAP[i] = {}
-        for j in range(0, 5):
+        for j in range(0, int(LIST_WORDS)):
             HASHMAP[i][j] = 1
 
     return HASHMAP
@@ -108,17 +104,16 @@ return:                 string; the value of the string wiht 0, 1 or 2
 
 """
 
-def create_string_3value():
-    MY_WORD = input("Scrivi una stringa lunga 5 cosi formata:\n\t0 se la lettera nella corrispettiva posizione NON esiste\n\t1 se la lettera nella corrispettiva posizione ESISTE ma NON e' in quella posizione\n\t2 se la lettera nella corrispettiva posizione ESISTE ed e' in posizione CORRETTA\n")
+def create_string_3value(LIST_WORDS):
+    MY_WORD = input("Scrivi una stringa lunga " + str(LIST_WORDS) + " cosi formata:\n\t0 se la lettera nella corrispettiva posizione NON esiste\n\t1 se la lettera nella corrispettiva posizione ESISTE ma NON e' in quella posizione\n\t2 se la lettera nella corrispettiva posizione ESISTE ed e' in posizione CORRETTA\n")
     ALLOWED = "012"
 
-    while len(str(MY_WORD)) != 5 or not str(MY_WORD).isdecimal() or not all(ch in ALLOWED for ch in MY_WORD):
+    while len(str(MY_WORD)) != int(LIST_WORDS) or not str(MY_WORD).isdecimal() or not all(ch in ALLOWED for ch in MY_WORD):
         MY_WORD = str("")
-        MY_WORD = input("ERRORE!\nScrivi una stringa lunga 5 cosi formata:\n\t0 se la lettera nella corrispettiva posizione NON esiste\n\t1 se la lettera nella corrispettiva posizione ESISTE ma NON e' in quella posizione\n\t2 se la lettera nella corrispettiva posizione ESISTE ed e' in posizione CORRETTA\n")
+        MY_WORD = input("ERRORE!\nScrivi una stringa lunga " + str(LIST_WORDS) + " cosi formata:\n\t0 se la lettera nella corrispettiva posizione NON esiste\n\t1 se la lettera nella corrispettiva posizione ESISTE ma NON e' in quella posizione\n\t2 se la lettera nella corrispettiva posizione ESISTE ed e' in posizione CORRETTA\n")
     
     print("\n")
     return MY_WORD
-
 
 
 """
@@ -129,19 +124,19 @@ return:
 
 """
 
-def resolve(WORDS):
+def resolve(WORDS, LIST_WORDS):
 
     STRING_INDEX = {"a": 0, "b": 1, "c": 2, "d": 3, "e": 4, "f": 5, "g": 6, "h": 7, "i": 8, "j": 9, "k": 10, "l": 11, "m": 12, "n": 13, "o": 14, "p": 15, "q": 16, "r": 17, "s": 18, "t": 19, "u": 20, "v": 21, "w": 22, "x": 23, "y": 24, "z": 25}
 
-    MATRIX = create_map()
+    MATRIX = create_map(LIST_WORDS)
     CHAR_ONE = []
 
 
     while len(WORDS) > 1:
-        WORD = create_first_word(WORDS)
-        STRING_COMPARE = create_string_3value()
+        WORD = create_first_word(WORDS, LIST_WORDS)
+        STRING_COMPARE = create_string_3value(LIST_WORDS)
         
-        for i in range(0, 5):
+        for i in range(0, int(LIST_WORDS)):
             NUMBER = (STRING_INDEX[WORD[i]])
             """
             first check is when user insert the number 2 for a char: sets the corrisponding index of letter in MATRIX to 2 and  sets all
@@ -162,7 +157,7 @@ def resolve(WORDS):
             """
 
             if STRING_COMPARE[i] == str(0):
-                for i in range(0, 5):
+                for i in range(0, int(LIST_WORDS)):
                     if MATRIX[NUMBER][i] != 2:
                         MATRIX[NUMBER][i] = 0
 
@@ -179,7 +174,7 @@ def resolve(WORDS):
         confront the words in my set with my MATRIX to filter out the words we dont need
         """
         for word in WORDS.copy():
-            for c in range(0, 5):
+            for c in range(0, int(LIST_WORDS)):
                 NUMBER = STRING_INDEX[word[c]]
                 if MATRIX[NUMBER][c] == 0:
                     WORDS.remove(word)
@@ -200,7 +195,6 @@ def resolve(WORDS):
         print("Congratulazioni! la parola e': " + WORDS.pop())
     else:
         print("Qualcosa e' andato storto, non e' stata trovata alcuna parola :(")
-
 
 
 """
@@ -224,22 +218,27 @@ def print_set(SET):
 
 """
 
-start():                start the algorithm
+start():                start the algorithm and let the user choice how long is the word to guess
 return:                 null;
 
 """
 
 def start():
-    LIST_WORDS_5 = "./list/lista_5_wordle_ita.txt"
-    INPUT = open(LIST_WORDS_5, "r")
+    LIST_WORDS = input("Inserisci la lunghezza della parola da indovinare: ")
+    ALLOW = "456789"
+    while len(str(LIST_WORDS)) != 1 or not str(LIST_WORDS).isdecimal() or not all(ch in ALLOW for ch in LIST_WORDS):
+        LIST_WORDS = ""
+        LIST_WORDS = input("Inserisci la lunghezza della parola da indovinare: ")
+
+    LIST_WORDS_ALL = "./list/lista_" + str(LIST_WORDS) + "_wordle_ita.txt"
+    INPUT = open(LIST_WORDS_ALL, "r")
     WORDS = set()
 
     for word in INPUT:
         WORDS.add(word.strip())
 
     INPUT.close()
-    resolve(WORDS)
-
+    resolve(WORDS, LIST_WORDS)
 
 
 if __name__ == "__main__":
