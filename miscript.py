@@ -31,6 +31,8 @@ def create_files():
 """
 
 write_on_files():       writes on the respective file for the corresponding index
+argument:               int; c the length of the word
+                        string; name the name of the file
 return:                 null;
 
 """
@@ -61,7 +63,8 @@ def writes():
 """
 
 start():                create the first word for the algorithm with all the checks necessary
-argument:               set; take the set containing all the 5 chars words 
+argument:               set; SET_OF_WORD take the set containing all the 5 chars words
+                        int; LIST_WORDS who represent the length of the word
 return:                 string; the first word of wordle
 
 """
@@ -82,6 +85,7 @@ def create_first_word(SET_OF_WORD, LIST_WORDS):
 """
 
 create_map():           create the map of all 1 for the confronting of the words
+argument:               int; LIST_WORDS who represent the length of the word
 return:                 list of dict of dict; the structure for keep in memory the state of the words
 
 """
@@ -100,6 +104,7 @@ def create_map(LIST_WORDS):
 """
 
 create_string_3value(): create a string of 0, 1 or 2 to represent the letter which could, has or can't be in the word
+argument:               int; LIST_WORDS who represent the length of the word
 return:                 string; the value of the string wiht 0, 1 or 2
 
 """
@@ -119,7 +124,8 @@ def create_string_3value(LIST_WORDS):
 """
 
 resolve():              try to resolve the words cycling until the input contains only 1 word
-argument:               set; the set of all the possible Words
+argument:               map; WORDS the map of all the possible Words
+                        int; LIST_WORDS who represent the length of the word
 return:                 
 
 """
