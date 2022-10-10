@@ -1,5 +1,5 @@
 
-INPUT_FILE = "./input/660000_parole_italiane.txt"
+INPUT_FILE = "./input/280000_parole_italiane.txt"
 FIRST = "./list/lista_"
 THIRD = "_wordle_ita.txt"
 
@@ -216,7 +216,7 @@ def print_set(SET):
     i = 0
     for w in SET:
         if i < len(SET) - 1:
-            print(w, end=', ')
+            print(w, end='\t')
         else:
             print(w + "\n")
         i = i + 1
