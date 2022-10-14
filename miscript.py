@@ -211,7 +211,7 @@ def resolve(WORDS, LIST_WORDS):
         os.system('clear')
         print_list_words(WORD_USED)
         print_set(WORDS)
-        optimize(WORDS)
+        optimize(WORDS, LIST_WORDS)
 
     if len(WORDS) == 1:
         print("Congratulazioni! la parola e': " + WORDS.pop())
@@ -223,11 +223,12 @@ def resolve(WORDS, LIST_WORDS):
 
 optimize:               try to optimize the word to select
 argument:               set; WORDS the set of the possible words
+                        string; LIST_WORDS is the length of word
 return:
 
 """
 
-def optimize(WORDS):
+def optimize(WORDS, LIST_WORDS):
     """
     Step 1: create a map which count the frequency of the letters that appear in each word and sort it in descending order
     """
@@ -240,12 +241,25 @@ def optimize(WORDS):
                 LETTER_COUNT[c] = 1
 
     LETTER_COUNT = dict(sorted(LETTER_COUNT.items(), key=lambda item: item[1], reverse=True))
-    """
-    Step 2: statment for 5 letters or less AND 6 or plus letters based on the score in LETTER_COUNT
-    """
-    #if len(LETTER_COUNT) <= 5:
 
-    #else:
+    WORD_COUNT = {}
+    for word in WORDS:
+        CONTAINS = []
+        TOTAL = 0
+        for c in word:
+            if c not in CONTAINS:
+                TOTAL = TOTAL + LETTER_COUNT[c]
+                CONTAINS.append(c)
+
+        WORD_COUNT[word] = TOTAL
+
+    WORD_COUNT = dict(sorted(WORD_COUNT.items(), key=lambda item: item[1], reverse=True))
+
+    print(LETTER_COUNT)
+    print("\n\n")
+    print(WORD_COUNT)
+
+
 
 
 """
