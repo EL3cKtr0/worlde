@@ -1,15 +1,17 @@
+import os
+
+
 
 INPUT_FILE = "./input/280000_parole_italiane.txt"
 FIRST = "./list/lista_"
 THIRD = "_wordle_ita.txt"
 
+
+
 def main():
-    print("Generating files..")
     create_files()
 
-    print("Writing on files..")
     writes()
-
 
     start()
 
@@ -17,7 +19,7 @@ def main():
 """
 
 create_files():         create the files .txt of each lenght of words from 4 to 9
-return:                 null;
+return: 
 
 """
 
@@ -33,7 +35,7 @@ def create_files():
 write_on_files():       writes on the respective file for the corresponding index
 argument:               int; c the length of the word
                         string; name the name of the file
-return:                 null;
+return:
 
 """
 
@@ -50,7 +52,7 @@ def write_on_file(c, name):
 """
 
 writes():               for each file from 4 to 9 call the write_on_files function
-return:                 null;
+return: 
 
 """
 
@@ -65,17 +67,26 @@ def writes():
 start():                create the first word for the algorithm with all the checks necessary
 argument:               set; SET_OF_WORD take the set containing all the 5 chars words
                         int; LIST_WORDS who represent the length of the word
+                        list; the list of the words used
 return:                 string; the first word of wordle
 
 """
 
-def create_first_word(SET_OF_WORD, LIST_WORDS):
-    MY_WORD = input("Inserisci una parola esistente da " + str(LIST_WORDS) + " caratteri:\n")
+def create_first_word(SET_OF_WORD, LIST_WORDS, WORD_USED):
+    if len(WORD_USED) < 1: 
+        MY_WORD = input("Inserisci una parola esistente da " + str(LIST_WORDS) + " caratteri:\n")
+    else:
+        MY_WORD = input("Inserisci una parola DELLA LISTA da " + str(LIST_WORDS) + " caratteri:\n")
+
     MY_WORD = MY_WORD.lower()
 
     while len(MY_WORD) != int(LIST_WORDS) or not MY_WORD.isalpha() or MY_WORD not in SET_OF_WORD:
         MY_WORD = ""
-        MY_WORD = input("DEVI inserire una parola esistente da " + str(LIST_WORDS) + " caratteri:\n")
+        if len(WORD_USED) < 1:
+            MY_WORD = input("DEVI inserire una parola esistente da " + str(LIST_WORDS) + " caratteri:\n")
+        else:
+            MY_WORD = input("DEVI inserire una parola della lista da " + str(LIST_WORDS) + " caratteri:\n")
+
         MY_WORD = MY_WORD.lower()
 
     print("\n")
@@ -136,11 +147,13 @@ def resolve(WORDS, LIST_WORDS):
 
     MATRIX = create_map(LIST_WORDS)
     CHAR_ONE = []
-
+    
+    WORD_USED=[]
 
     while len(WORDS) > 1:
-        WORD = create_first_word(WORDS, LIST_WORDS)
+        WORD = create_first_word(WORDS, LIST_WORDS, WORD_USED)
         STRING_COMPARE = create_string_3value(LIST_WORDS)
+        WORD_USED.append(WORD)
         
         for i in range(0, int(LIST_WORDS)):
             NUMBER = (STRING_INDEX[WORD[i]])
@@ -195,7 +208,10 @@ def resolve(WORDS, LIST_WORDS):
                     WORDS.remove(word)
                     break
 
+        os.system('clear')
+        print_list_words(WORD_USED)
         print_set(WORDS)
+        optimize(WORDS)
 
     if len(WORDS) == 1:
         print("Congratulazioni! la parola e': " + WORDS.pop())
@@ -205,27 +221,76 @@ def resolve(WORDS, LIST_WORDS):
 
 """
 
+optimize:               try to optimize the word to select
+argument:               set; WORDS the set of the possible words
+return:
+
+"""
+
+def optimize(WORDS):
+    """
+    Step 1: create a map which count the frequency of the letters that appear in each word and sort it in descending order
+    """
+    LETTER_COUNT = {}
+    for word in WORDS:
+        for c in word:
+            if c in LETTER_COUNT:
+                LETTER_COUNT[c] = LETTER_COUNT[c] + 1
+            else:
+                LETTER_COUNT[c] = 1
+
+    LETTER_COUNT = dict(sorted(LETTER_COUNT.items(), key=lambda item: item[1], reverse=True))
+    """
+    Step 2: statment for 5 letters or less AND 6 or plus letters based on the score in LETTER_COUNT
+    """
+    #if len(LETTER_COUNT) <= 5:
+
+    #else:
+
+
+"""
+
+print_list_words():     print the list of words used
+argument:               list; WORD_USED is the list passed of all word used from the user
+return:
+
+"""
+
+def print_list_words(WORD_USED):
+    i = 0
+    print("Lista di parole usate:")
+    for w in WORD_USED:
+        if i < len(WORD_USED) - 1:
+            print(w, end=', ')
+        else:
+            print(w + "\n\n\n")
+        i = i + 1
+
+
+"""
+
 print_set():            print the set in the argument
 argument:               set; the set we wanna print
-return:                 null
+return:
 
 
 """
 
 def print_set(SET):
     i = 0
+    print("Lista di possibili parole: ")
     for w in SET:
         if i < len(SET) - 1:
             print(w, end='\t')
         else:
-            print(w + "\n")
+            print(w + "\n\n\n")
         i = i + 1
 
 
 """
 
 start():                start the algorithm and let the user choice how long is the word to guess
-return:                 null;
+return:
 
 """
 
