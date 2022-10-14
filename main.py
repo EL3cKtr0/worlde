@@ -1,11 +1,9 @@
 import os
 
 
-
 INPUT_FILE = "./input/280000_parole_italiane.txt"
 FIRST = "./list/lista_"
 THIRD = "_wordle_ita.txt"
-
 
 
 def main():
@@ -234,7 +232,7 @@ def optimize(WORDS, LIST_WORDS):
     """
     Step 1: create a map which count the frequency of the letters that appear in each word and sort it in descending order
     """
-
+    COUNT_LETTERS = 0
     LETTER_COUNT = {}
     for word in WORDS:
         for c in word:
@@ -242,6 +240,7 @@ def optimize(WORDS, LIST_WORDS):
                 LETTER_COUNT[c] = LETTER_COUNT[c] + 1
             else:
                 LETTER_COUNT[c] = 1
+            COUNT_LETTERS = COUNT_LETTERS + 1
 
     LETTER_COUNT = dict(sorted(LETTER_COUNT.items(), key=lambda item: item[1], reverse=True))
 
@@ -271,13 +270,18 @@ def optimize(WORDS, LIST_WORDS):
     if len(WORD_COUNT) > int(LIST_WORDS):
         LIMIT = int(LIST_WORDS) - 1
         for key in WORD_COUNT:
-            print(key + ' --> ' + str(WORD_COUNT[key]))
+            PERCENT = ((100 *  WORD_COUNT[key]) / COUNT_LETTERS)
+            LIMIT_PERCENT = round(PERCENT, 2)
+            print(key + ' --> ' + str(LIMIT_PERCENT) + '%')
             LIMIT = LIMIT - 1
             if LIMIT < 0:
                 break
     else:
+        LIMIT = int(LIST_WORDS) - 1
         for key in WORD_COUNT:
-            print(key + ' --> ' + str(WORD_COUNT[key]))
+            PERCENT = ((100 *  WORD_COUNT[key]) / COUNT_LETTERS)
+            LIMIT_PERCENT = round(PERCENT, 2)
+            print(key + ' --> ' + str(LIMIT_PERCENT) + '%')
 
     print('\n\n')
     
