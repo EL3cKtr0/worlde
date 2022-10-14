@@ -86,8 +86,8 @@ def create_first_word(SET_OF_WORD, LIST_WORDS, WORD_USED):
             MY_WORD = input("DEVI inserire una parola della lista da " + str(LIST_WORDS) + " caratteri:\n")
 
         MY_WORD = MY_WORD.lower()
-
-    print("\n")
+    
+    print('\n')
     return MY_WORD
 
 
@@ -125,8 +125,8 @@ def create_string_3value(LIST_WORDS):
     while len(str(MY_WORD)) != int(LIST_WORDS) or not str(MY_WORD).isdecimal() or not all(ch in ALLOWED for ch in MY_WORD):
         MY_WORD = str("")
         MY_WORD = input("ERRORE!\nScrivi una stringa lunga " + str(LIST_WORDS) + " cosi formata:\n\t0 se la lettera nella corrispettiva posizione NON esiste\n\t1 se la lettera nella corrispettiva posizione ESISTE ma NON e' in quella posizione\n\t2 se la lettera nella corrispettiva posizione ESISTE ed e' in posizione CORRETTA\n")
-    
-    print("\n")
+
+    print('\n')
     return MY_WORD
 
 
@@ -141,20 +141,24 @@ return:
 
 def resolve(WORDS, LIST_WORDS):
 
+    BEST_WORD = "aiole"
+
     STRING_INDEX = {"a": 0, "b": 1, "c": 2, "d": 3, "e": 4, "f": 5, "g": 6, "h": 7, "i": 8, "j": 9, "k": 10, "l": 11, "m": 12, "n": 13, "o": 14, "p": 15, "q": 16, "r": 17, "s": 18, "t": 19, "u": 20, "v": 21, "w": 22, "x": 23, "y": 24, "z": 25}
 
     MATRIX = create_map(LIST_WORDS)
     CHAR_ONE = []
     
-    WORD_USED=[]
+    WORD_USED = []
+    STRING_COMPARE_USED = []
 
     while len(WORDS) > 1:
         WORD = create_first_word(WORDS, LIST_WORDS, WORD_USED)
-        STRING_COMPARE = create_string_3value(LIST_WORDS)
         WORD_USED.append(WORD)
-        
+        STRING_COMPARE = create_string_3value(LIST_WORDS)
+        STRING_COMPARE_USED.append(STRING_COMPARE)
         for i in range(0, int(LIST_WORDS)):
             NUMBER = (STRING_INDEX[WORD[i]])
+
             """
             first check is when user insert the number 2 for a char: sets the corrisponding index of letter in MATRIX to 2 and  sets all
             the remain letters index to 0
@@ -168,7 +172,6 @@ def resolve(WORDS, LIST_WORDS):
                 if WORD[i] in CHAR_ONE:
                     CHAR_ONE.remove(WORD[i])
             
-
             """
             second check is when user insert the number 0 for a char: set all the indexes of the letter equal to 0
             """
@@ -190,6 +193,7 @@ def resolve(WORDS, LIST_WORDS):
         """
         confront the words in my set with my MATRIX to filter out the words we dont need
         """
+
         for word in WORDS.copy():
             for c in range(0, int(LIST_WORDS)):
                 NUMBER = STRING_INDEX[word[c]]
@@ -200,14 +204,19 @@ def resolve(WORDS, LIST_WORDS):
         """
         remove the words that doesn't contain the letter needed
         """
+
         for word in WORDS.copy(): 
             for w in CHAR_ONE:
                 if w not in word:
                     WORDS.remove(word)
                     break
 
+        """
+        printing everything and optimize the choice
+        """
+
         os.system('clear')
-        print_list_words(WORD_USED)
+        print_list_words(WORD_USED, STRING_COMPARE_USED)
 
         if len(WORDS) == 1:
             print("Congratulazioni! la parola e': " + WORDS.pop())
@@ -229,9 +238,11 @@ return:
 """
 
 def optimize(WORDS, LIST_WORDS):
+
     """
-    Step 1: create a map which count the frequency of the letters that appear in each word and sort it in descending order
+    Step1: create a map which count the frequency of the letters that appear in each word and sort it in descending order
     """
+
     COUNT_LETTERS = 0
     LETTER_COUNT = {}
     for word in WORDS:
@@ -292,18 +303,27 @@ def optimize(WORDS, LIST_WORDS):
 
 print_list_words():     print the list of words used
 argument:               list; WORD_USED is the list passed of all word used from the user
+                        list; STRING_COMPARE is the list we use to compare the string with the data we have
 return:
 
 """
 
-def print_list_words(WORD_USED):
+def print_list_words(WORD_USED, STRING_COMPARE_USED):
     i = 0
-    print("Lista di parole usate:")
+    print("\nLista di parole usate:")
     for w in WORD_USED:
         if i < len(WORD_USED) - 1:
             print(w, end=', ')
         else:
-            print(w + "\n\n\n")
+            print(w)
+        i = i + 1
+
+    i = 0
+    for s in STRING_COMPARE_USED:
+        if i < len(STRING_COMPARE_USED) - 1:
+            print(s, end=', ')
+        else:
+            print(s, '\n\n')
         i = i + 1
 
 
@@ -334,11 +354,11 @@ return:
 """
 
 def start():
-    LIST_WORDS = input("Inserisci la lunghezza della parola da indovinare: ")
+    LIST_WORDS = input("Inserisci la lunghezza della parola da indovinare: \n")
     ALLOW = "456789"
     while len(str(LIST_WORDS)) != 1 or not str(LIST_WORDS).isdecimal() or not all(ch in ALLOW for ch in LIST_WORDS):
         LIST_WORDS = ""
-        LIST_WORDS = input("Inserisci la lunghezza della parola da indovinare: ")
+        LIST_WORDS = input("Inserisci la lunghezza della parola da indovinare: \n")
 
     LIST_WORDS_ALL = "./list/lista_" + str(LIST_WORDS) + "_wordle_ita.txt"
     INPUT = open(LIST_WORDS_ALL, "r")
