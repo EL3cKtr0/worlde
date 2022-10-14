@@ -210,13 +210,15 @@ def resolve(WORDS, LIST_WORDS):
 
         os.system('clear')
         print_list_words(WORD_USED)
-        print_set(WORDS)
-        optimize(WORDS, LIST_WORDS)
 
-    if len(WORDS) == 1:
-        print("Congratulazioni! la parola e': " + WORDS.pop())
-    else:
-        print("Qualcosa e' andato storto, non e' stata trovata alcuna parola :(")
+        if len(WORDS) == 1:
+            print("Congratulazioni! la parola e': " + WORDS.pop())
+        elif len(WORDS) > 1:
+            print("Lista di possibili parole:")
+            print_set(WORDS)
+            optimize(WORDS, LIST_WORDS)
+        else:
+            print("Qualcosa e' andato storto, non e' stata trovata alcuna parola :(")
 
 
 """
@@ -232,6 +234,7 @@ def optimize(WORDS, LIST_WORDS):
     """
     Step 1: create a map which count the frequency of the letters that appear in each word and sort it in descending order
     """
+
     LETTER_COUNT = {}
     for word in WORDS:
         for c in word:
@@ -241,6 +244,10 @@ def optimize(WORDS, LIST_WORDS):
                 LETTER_COUNT[c] = 1
 
     LETTER_COUNT = dict(sorted(LETTER_COUNT.items(), key=lambda item: item[1], reverse=True))
+
+    """
+    Step2: create the map which contain the score of each word based on letters in and the score of the letter
+    """
 
     WORD_COUNT = {}
     for word in WORDS:
@@ -255,10 +262,25 @@ def optimize(WORDS, LIST_WORDS):
 
     WORD_COUNT = dict(sorted(WORD_COUNT.items(), key=lambda item: item[1], reverse=True))
 
-    print(LETTER_COUNT)
-    print("\n\n")
-    print(WORD_COUNT)
+    """
+    Step3: create the list with the best possible words for given input
+    """
 
+    print("Lista migliori parole: ")
+
+    if len(WORD_COUNT) > int(LIST_WORDS):
+        LIMIT = int(LIST_WORDS) - 1
+        for key in WORD_COUNT:
+            print(key + ' --> ' + str(WORD_COUNT[key]))
+            LIMIT = LIMIT - 1
+            if LIMIT < 0:
+                break
+    else:
+        for key in WORD_COUNT:
+            print(key + ' --> ' + str(WORD_COUNT[key]))
+
+    print('\n\n')
+    
 
 
 
@@ -292,7 +314,6 @@ return:
 
 def print_set(SET):
     i = 0
-    print("Lista di possibili parole: ")
     for w in SET:
         if i < len(SET) - 1:
             print(w, end='\t')
