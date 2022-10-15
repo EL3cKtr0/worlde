@@ -349,16 +349,18 @@ def print_set(SET):
 """
 
 start():                start the algorithm and let the user choice how long is the word to guess
-return:
+return:                 null
 
 """
 
 def start():
-    LIST_WORDS = input("Inserisci la lunghezza della parola da indovinare: \n")
+
+    LIST_WORDS = input("Inserisci la lunghezza della parola da indovinare (tra 4 e 9 caratteri): \n")
     ALLOW = "456789"
+
     while len(str(LIST_WORDS)) != 1 or not str(LIST_WORDS).isdecimal() or not all(ch in ALLOW for ch in LIST_WORDS):
         LIST_WORDS = ""
-        LIST_WORDS = input("Inserisci la lunghezza della parola da indovinare: \n")
+        LIST_WORDS = input("Devi inserire la lunghezza della parola da indovinare (tra 4 e 9 caratteri): \n")
 
     LIST_WORDS_ALL = "./list/lista_" + str(LIST_WORDS) + "_wordle_ita.txt"
     INPUT = open(LIST_WORDS_ALL, "r")
@@ -368,7 +370,47 @@ def start():
         WORDS.add(word.strip())
 
     INPUT.close()
-    resolve(WORDS, LIST_WORDS)
+
+    SELECTED = input("Inserisci 1 per giocare, 0 per testare: \n")
+    SELECT_ALLOW = "01"
+
+    while len(str(LIST_WORDS)) != 1 or not str(SELECTED).isdecimal() or not all(ch in SELECT_ALLOW for ch in SELECTED):
+        SELECTED = ""
+        SELECTED = input("Devi inserire 1 per giocare, 0 per testare: \n")
+
+    if int(SELECTED) == 1:
+        resolve(WORDS, LIST_WORDS)
+    else:
+        print("Hello")
+
+
+"""
+string_compare:             take 2 strings and confront them generating the string we need, compoed by 0, 1 or 2
+argument:                   str; STRING_1 the first string
+                            str; STRING_2 the ipothetic "correct" string
+return:                     str; the string formed by 0, 1 or 2
+"""
+
+def string_compare(STRING_1, STRING_2):
+    STRING_TOT = ""
+
+    for i in range(0, len(STRING_1)):
+        FOUND = False
+        for j in range(0, len(STRING_2)):
+            if STRING_1[i] == STRING_2[i]:
+                STRING_TOT = STRING_TOT + str(2)
+                FOUND = True
+                break
+            else:
+                if STRING_1[i] == STRING_2[j]:
+                    STRING_TOT = STRING_TOT + str(1)
+                    FOUND = True
+                    break
+
+        if not FOUND:
+            STRING_TOT = STRING_TOT + str(0)
+
+    return STRING_TOT
 
 
 if __name__ == "__main__":
