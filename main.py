@@ -141,8 +141,6 @@ return:
 
 def resolve(WORDS, LIST_WORDS):
 
-    BEST_WORD = "aiole"
-
     STRING_INDEX = {"a": 0, "b": 1, "c": 2, "d": 3, "e": 4, "f": 5, "g": 6, "h": 7, "i": 8, "j": 9, "k": 10, "l": 11, "m": 12, "n": 13, "o": 14, "p": 15, "q": 16, "r": 17, "s": 18, "t": 19, "u": 20, "v": 21, "w": 22, "x": 23, "y": 24, "z": 25}
 
     MATRIX = create_map(LIST_WORDS)
@@ -381,7 +379,153 @@ def start():
     if int(SELECTED) == 1:
         resolve(WORDS, LIST_WORDS)
     else:
-        print("Hello")
+        NEW_INPUT = "./test/test.txt"
+        INPUT = open(NEW_INPUT, "r")
+
+        FIRST_WORD = INPUT.readline()
+
+        for target_word in INPUT:
+            TESTER = automatic_resolve(WORDS, LIST_WORDS, FIRST_WORD, target_word)
+            if TESTER > 6:
+                print("Oh no! La tua parola (" + FIRST_WORD + ") non ha ottenuto buoni risultati con la parola target (" + target_word + "): hai ottenuto uno score di " + str(TESTER))
+            elif TESTER >= 1 and TESTER <= 6:
+                print("CONGRATULAZIONI! La tua parola (" + FIRST_WORD + ") ha ottenuto buoni risultati con la parola target (" + target_word + ") per un totale di " + str(TESTER))
+            else:
+                print("ERRORE! QUALCOSA NON VA")
+
+"""
+automatic_resolve:          try to automatate the process of resolving wordle game
+argument:                   map; WORDS the map of all the possible Words
+                            int; LIST_WORDS who represent the length of the word
+                            str; FIRST_WORD is the first word used to start the game
+                            str; target_word is the target word we wanna find
+return:
+"""
+
+def automatic_resolve(WORDS, LIST_WORDS, FIRST_WORD, target_word):
+
+    STRING_INDEX = {"a": 0, "b": 1, "c": 2, "d": 3, "e": 4, "f": 5, "g": 6, "h": 7, "i": 8, "j": 9, "k": 10, "l": 11, "m": 12, "n": 13, "o": 14, "p": 15, "q": 16, "r": 17, "s": 18, "t": 19, "u": 20, "v": 21, "w": 22, "x": 23, "y": 24, "z": 25}
+
+    MATRIX = create_map(LIST_WORDS)
+    CHAR_ONE = []
+
+
+    WORD = FIRST_WORD
+    STRING_COMPARE = string_compare(WORD, target_word)
+    TOT = 1
+
+    while len(WORDS) > 1:
+        for i in range(0, int(LIST_WORDS)):
+            NUMBER = (STRING_INDEX[WORD[i]])
+
+            """
+            first check is when user insert the number 2 for a char: sets the corrisponding index of letter in MATRIX to 2 and  sets all
+            the remain letters index to 0
+            """
+
+            if STRING_COMPARE[i] == str(2):
+                MATRIX[NUMBER][i] = 2
+                for j in range(0, 26):
+                    if NUMBER != j:
+                        MATRIX[j][i] = 0
+                if WORD[i] in CHAR_ONE:
+                    CHAR_ONE.remove(WORD[i])
+
+            """
+            second check is when user insert the number 0 for a char: set all the indexes of the letter equal to 0
+            """
+
+            if STRING_COMPARE[i] == str(0):
+                for i in range(0, int(LIST_WORDS)):
+                    if MATRIX[NUMBER][i] != 2:
+                        MATRIX[NUMBER][i] = 0
+
+            """
+            third check is when user insert the number 1 for a char: set the corrispondig index to 0 and add it to the list of needed chars
+            """
+
+            if STRING_COMPARE[i] == str(1):
+                if WORD[i] not in CHAR_ONE:
+                    CHAR_ONE.append(WORD[i])
+                MATRIX[NUMBER][i] = 0
+
+        """
+        confront the words in my set with my MATRIX to filter out the words we dont need
+        """
+
+        for word in WORDS.copy():
+            for c in range(0, int(LIST_WORDS)):
+                NUMBER = STRING_INDEX[word[c]]
+                if MATRIX[NUMBER][c] == 0:
+                    WORDS.remove(word)
+                    break
+
+        """
+        remove the words that doesn't contain the letter needed
+        """
+
+        for word in WORDS.copy():
+            for w in CHAR_ONE:
+                if w not in word:
+                    WORDS.remove(word)
+                    break
+
+
+        if len(WORDS) == 1:
+            return TOT
+        elif len(WORDS) > 1:
+            WORD = automatic_optimize(WORDS, LIST_WORDS)
+            STRING_COMPARE = string_compare(WORD, target_word)
+            TOT = TOT + 1
+
+    return 0
+
+
+"""
+automatic_optimize      optimize automatically the process of best word
+argument:               set; WORDS the set of the possible words
+                        string; LIST_WORDS is the length of word
+return:
+
+"""
+
+def automatic_optimize(WORDS, LIST_WORDS):
+
+    """
+    Step1: create a map which count the frequency of the letters that appear in each word and sort it in descending order
+    """
+
+    COUNT_LETTERS = 0
+    LETTER_COUNT = {}
+    for word in WORDS:
+        for c in word:
+            if c in LETTER_COUNT:
+                LETTER_COUNT[c] = LETTER_COUNT[c] + 1
+            else:
+                LETTER_COUNT[c] = 1
+            COUNT_LETTERS = COUNT_LETTERS + 1
+
+    LETTER_COUNT = dict(sorted(LETTER_COUNT.items(), key=lambda item: item[1], reverse=True))
+
+    """
+    Step2: create the map which contain the score of each word based on letters in and the score of the letter
+    """
+
+    WORD_COUNT = {}
+    for word in WORDS:
+        CONTAINS = []
+        TOTAL = 0
+        for c in word:
+            if c not in CONTAINS:
+                TOTAL = TOTAL + LETTER_COUNT[c]
+                CONTAINS.append(c)
+
+        WORD_COUNT[word] = TOTAL
+
+    WORD_COUNT = dict(sorted(WORD_COUNT.items(), key=lambda item: item[1], reverse=True))
+
+    return str(list(WORD_COUNT.keys())[0])
+
 
 
 """
