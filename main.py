@@ -1,6 +1,9 @@
 import os
 
 
+
+
+
 INPUT_FILE = "./input/280000_parole_italiane.txt"
 FIRST = "./list/lista_"
 THIRD = "_wordle_ita.txt"
