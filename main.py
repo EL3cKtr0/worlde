@@ -10,6 +10,7 @@ THIRD = "_wordle_ita.txt"
 
 
 def main():
+
     create_files()
 
     writes()
@@ -386,9 +387,16 @@ def start():
         INPUT = open(NEW_INPUT, "r")
 
         FIRST_WORD = INPUT.readline()
+        FIRST_WORD = FIRST_WORD.replace('\n', '')
+
+        temp_words = WORDS.copy()
 
         for target_word in INPUT:
+            target_word = target_word.replace('\n', '')
             TESTER = automatic_resolve(WORDS, LIST_WORDS, FIRST_WORD, target_word)
+
+            WORDS = temp_words.copy()
+
             if TESTER > 6:
                 print("Oh no! La tua parola (" + FIRST_WORD + ") non ha ottenuto buoni risultati con la parola target (" + target_word + "): hai ottenuto uno score di " + str(TESTER))
             elif TESTER >= 1 and TESTER <= 6:
@@ -405,7 +413,7 @@ argument:                   map; WORDS the map of all the possible Words
 return:
 """
 
-def automatic_resolve(WORDS, LIST_WORDS, FIRST_WORD, target_word):
+def automatic_resolve(words, LIST_WORDS, FIRST_WORD, target_word):
 
     STRING_INDEX = {"a": 0, "b": 1, "c": 2, "d": 3, "e": 4, "f": 5, "g": 6, "h": 7, "i": 8, "j": 9, "k": 10, "l": 11, "m": 12, "n": 13, "o": 14, "p": 15, "q": 16, "r": 17, "s": 18, "t": 19, "u": 20, "v": 21, "w": 22, "x": 23, "y": 24, "z": 25}
 
@@ -417,7 +425,8 @@ def automatic_resolve(WORDS, LIST_WORDS, FIRST_WORD, target_word):
     STRING_COMPARE = string_compare(WORD, target_word)
     TOT = 1
 
-    while len(WORDS) > 1:
+    while len(words) > 1:
+
         for i in range(0, int(LIST_WORDS)):
             NUMBER = (STRING_INDEX[WORD[i]])
 
@@ -456,33 +465,32 @@ def automatic_resolve(WORDS, LIST_WORDS, FIRST_WORD, target_word):
         confront the words in my set with my MATRIX to filter out the words we dont need
         """
 
-        for word in WORDS.copy():
+        for word in words.copy():
             for c in range(0, int(LIST_WORDS)):
                 NUMBER = STRING_INDEX[word[c]]
                 if MATRIX[NUMBER][c] == 0:
-                    WORDS.remove(word)
+                    words.remove(word)
                     break
 
         """
         remove the words that doesn't contain the letter needed
         """
 
-        for word in WORDS.copy():
+        for word in words.copy():
             for w in CHAR_ONE:
                 if w not in word:
-                    WORDS.remove(word)
+                    words.remove(word)
                     break
 
 
-        if len(WORDS) == 1:
+        if len(words) == 1:
             return TOT
-        elif len(WORDS) > 1:
-            WORD = automatic_optimize(WORDS, LIST_WORDS)
+        elif len(words) > 1:
+            WORD = automatic_optimize(words, LIST_WORDS)
             STRING_COMPARE = string_compare(WORD, target_word)
             TOT = TOT + 1
 
-    return 0
-
+    return -1
 
 """
 automatic_optimize      optimize automatically the process of best word
