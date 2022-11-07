@@ -1,16 +1,13 @@
 import os
 
-
-INPUT_FILE = "./input/280000_parole_italiane.txt"
-FIRST = "./list/lista_"
-THIRD = "_wordle_ita.txt"
-
-
 def main():
+    INPUT_FILE = "./input/280000_parole_italiane.txt"
+    FIRST = "./list/lista_"
+    THIRD = "_wordle_ita.txt"
 
-    create_files()
+    create_files(FIRST, THIRD)
 
-    writes()
+    writes(INPUT_FILE, FIRST, THIRD)
 
     start()
 
@@ -22,7 +19,7 @@ return:
 
 """
 
-def create_files():
+def create_files(FIRST, THIRD):
     for c in range(4, 10):
         NAME_OUTPUT = FIRST + str(c) + THIRD
         OUTPUT = open(NAME_OUTPUT, "w+")
@@ -38,7 +35,7 @@ return:
 
 """
 
-def write_on_file(c, name):
+def write_on_file(INPUT_FILE, c, name):
     INPUT = open(INPUT_FILE, "r")
     OUT = open(name, "w")
     for word in INPUT:
@@ -55,10 +52,10 @@ return:
 
 """
 
-def writes():
+def writes(FILE, FIRST, THIRD):
     for c in range(4, 10):
         NAME_OUTPUT = FIRST + str(c) + THIRD
-        write_on_file(c, NAME_OUTPUT)
+        write_on_file(FILE, c, NAME_OUTPUT)
 
 
 """
