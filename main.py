@@ -1,9 +1,6 @@
 import os
 
 
-
-
-
 INPUT_FILE = "./input/280000_parole_italiane.txt"
 FIRST = "./list/lista_"
 THIRD = "_wordle_ita.txt"
@@ -398,12 +395,6 @@ def start():
 
             print(FIRST_WORD + " " + target_word + " " + str(TESTER))
 
-            #if TESTER > 6:
-            #    print("Oh no! La tua parola (" + FIRST_WORD + ") non ha ottenuto buoni risultati con la parola target (" + target_word + "): hai ottenuto uno score di " + str(TESTER))
-            #elif TESTER >= 1 and TESTER <= 6:
-            #    print("CONGRATULAZIONI! La tua parola (" + FIRST_WORD + ") ha ottenuto buoni risultati con la parola target (" + target_word + ") per un totale di " + str(TESTER))
-            #else:
-            #    print("ERRORE! QUALCOSA NON VA")
 
 """
 automatic_resolve:          try to automatate the process of resolving wordle game
@@ -411,7 +402,7 @@ argument:                   map; WORDS the map of all the possible Words
                             int; LIST_WORDS who represent the length of the word
                             str; FIRST_WORD is the first word used to start the game
                             str; target_word is the target word we wanna find
-return:
+return:                     int; how many steps to take from the first word to the target word
 """
 
 def automatic_resolve(words, LIST_WORDS, FIRST_WORD, target_word):
