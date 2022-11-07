@@ -383,7 +383,7 @@ def start():
     if int(SELECTED) == 1:
         resolve(WORDS, LIST_WORDS)
     else:
-        NEW_INPUT = "./test/test.txt"
+        NEW_INPUT = "./list/lista_" + str(LIST_WORDS) + "_wordle_ita.txt"
         INPUT = open(NEW_INPUT, "r")
 
         FIRST_WORD = create_first_word(WORDS, LIST_WORDS, "")
