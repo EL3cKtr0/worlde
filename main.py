@@ -386,8 +386,7 @@ def start():
         NEW_INPUT = "./test/test.txt"
         INPUT = open(NEW_INPUT, "r")
 
-        FIRST_WORD = INPUT.readline()
-        FIRST_WORD = FIRST_WORD.replace('\n', '')
+        FIRST_WORD = create_first_word(WORDS, LIST_WORDS, "")
 
         temp_words = WORDS.copy()
 
@@ -397,12 +396,14 @@ def start():
 
             WORDS = temp_words.copy()
 
-            if TESTER > 6:
-                print("Oh no! La tua parola (" + FIRST_WORD + ") non ha ottenuto buoni risultati con la parola target (" + target_word + "): hai ottenuto uno score di " + str(TESTER))
-            elif TESTER >= 1 and TESTER <= 6:
-                print("CONGRATULAZIONI! La tua parola (" + FIRST_WORD + ") ha ottenuto buoni risultati con la parola target (" + target_word + ") per un totale di " + str(TESTER))
-            else:
-                print("ERRORE! QUALCOSA NON VA")
+            print(FIRST_WORD + " " + target_word + " " + str(TESTER))
+
+            #if TESTER > 6:
+            #    print("Oh no! La tua parola (" + FIRST_WORD + ") non ha ottenuto buoni risultati con la parola target (" + target_word + "): hai ottenuto uno score di " + str(TESTER))
+            #elif TESTER >= 1 and TESTER <= 6:
+            #    print("CONGRATULAZIONI! La tua parola (" + FIRST_WORD + ") ha ottenuto buoni risultati con la parola target (" + target_word + ") per un totale di " + str(TESTER))
+            #else:
+            #    print("ERRORE! QUALCOSA NON VA")
 
 """
 automatic_resolve:          try to automatate the process of resolving wordle game
