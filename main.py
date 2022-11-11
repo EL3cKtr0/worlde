@@ -1,5 +1,6 @@
 import os
 
+
 def main():
     INPUT_FILE = "./input/280000_parole_italiane.txt"
     FIRST = "./list/lista_"
