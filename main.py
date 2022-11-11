@@ -384,13 +384,18 @@ def start():
 
         temp_words = WORDS.copy()
 
+        out = open("./output/" + FIRST_WORD + ".txt", "w")
+
         for target_word in INPUT:
             target_word = target_word.replace('\n', '')
             TESTER = automatic_resolve(WORDS, LIST_WORDS, FIRST_WORD, target_word)
 
             WORDS = temp_words.copy()
 
-            print(FIRST_WORD + " " + target_word + " " + str(TESTER))
+
+            out.write(target_word + " " + str(TESTER))
+
+        out.close()
 
 
 """
@@ -485,7 +490,7 @@ def automatic_resolve(words, LIST_WORDS, FIRST_WORD, target_word):
 automatic_optimize      optimize automatically the process of best word
 argument:               set; WORDS the set of the possible words
                         string; LIST_WORDS is the length of word
-return:
+return:                 string; return the string with the most valuable points
 
 """
 
