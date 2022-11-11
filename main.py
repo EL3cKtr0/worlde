@@ -393,7 +393,7 @@ def start():
             WORDS = temp_words.copy()
 
 
-            out.write(target_word + " " + str(TESTER))
+            out.write(target_word + " " + str(TESTER) + "\n")
 
         out.close()
 
