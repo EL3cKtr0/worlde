@@ -386,8 +386,6 @@ def start():
 
         temp_words = WORDS.copy()
 
-        out = open("./output/" + FIRST_WORD + ".txt", "w")
-
         for target_word in INPUT:
             target_word = target_word.replace('\n', '')
             TESTER = automatic_resolve(WORDS, LIST_WORDS, FIRST_WORD, target_word)
@@ -395,9 +393,8 @@ def start():
             WORDS = temp_words.copy()
 
 
-            out.write(target_word + " " + str(TESTER) + "\n")
+            print(target_word + " " + str(TESTER))
 
-        out.close()
 
 
 """
