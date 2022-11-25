@@ -369,15 +369,17 @@ def start():
 
     INPUT.close()
 
-    SELECTED = input("Inserisci 1 per giocare, 0 per testare: \n")
-    SELECT_ALLOW = "01"
+    SELECTED = input("Inserisci:\n\t0 per testare\n\t1 per barare\n\t2 per giocare\n")
+    SELECT_ALLOW = "012"
 
     while len(str(LIST_WORDS)) != 1 or not str(SELECTED).isdecimal() or not all(ch in SELECT_ALLOW for ch in SELECTED):
         SELECTED = ""
-        SELECTED = input("Devi inserire 1 per giocare, 0 per testare: \n")
+        SELECTED = input("Devi inserire:\n\t0 per testare\n\t1 per barare\n\t2 per giocare\n")
 
     if int(SELECTED) == 1:
         resolve(WORDS, LIST_WORDS)
+    elif int(SELECTED) == 2:
+        play(WORDS, LIST_WORDS)
     else:
         NEW_INPUT = "./list/lista_" + str(LIST_WORDS) + "_wordle_ita.txt"
         INPUT = open(NEW_INPUT, "r")
@@ -395,6 +397,15 @@ def start():
 
             print(target_word + " " + str(TESTER))
 
+"""
+play:                       play the actual game wordle in italian
+argument:                   map; words the map of all the possible Words
+                            int; LIST_WORDS who represent the length of the word
+return:                     null;
+"""
+
+def play(words, list_words):
+    print("ciao")
 
 
 """
